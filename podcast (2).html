@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Podcast — J33 · Église Protestante Évangélique</title>
+<meta name="description" content="Prêches et séries de l'église J33. Enseignements ancrés dans les Écritures.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=block" rel="stylesheet">
+<style>
+:root{
+  --fond:#FFFFFF; --encre:#101622; --gris:#5A6068;
+  --ligne:rgba(16,22,34,.14); --ligne-l:rgba(16,22,34,.08);
+  --or:#B5973C; --bleu:#5E97BD; --bleu-pale:#DCEAF3;
+  --noir:#0C111C; --creme:#F3EFE4; --creme-50:rgba(243,239,228,.55);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{overflow-x:clip;scroll-behavior:smooth}
+body{background:var(--fond);color:var(--encre);font-family:'Archivo',sans-serif;font-weight:300;line-height:1.6;overflow-x:clip}
+::selection{background:var(--or);color:#fff}
+a{color:inherit}
+img{max-width:100%}
+.display{font-family:'Anton',sans-serif;font-weight:400;letter-spacing:.01em;line-height:1}
+
+/* ─── HEADER ─────────────────────────────── */
+.site-header{padding:14px 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--ligne);position:sticky;top:0;background:var(--fond);z-index:50}
+.marque{font-family:'Anton',sans-serif;font-size:2.1rem;line-height:1;letter-spacing:.06em;text-transform:uppercase;color:var(--encre);cursor:default;user-select:none}
+
+/* ─── HERO ────────────────────────────────── */
+.hero{padding:72px 28px 60px;max-width:1500px;margin:0 auto}
+.hero .infos{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;text-transform:uppercase;letter-spacing:.14em;font-size:.78rem;font-weight:500;border-top:1px solid var(--ligne);padding-top:16px;margin-bottom:0}
+.hero .infos .h{color:var(--or)}
+.hero h1{font-family:'Anton',sans-serif;font-size:clamp(2rem,min(11.5vw,16svh),12rem);line-height:.98;text-transform:uppercase;letter-spacing:.04em;margin:20px 0 0;display:block}
+.hero h1>span{display:block;white-space:nowrap}
+.hero-desc{margin:36px 0 0;max-width:60ch;font-size:1.05rem;color:var(--gris);line-height:1.75}
+
+/* ─── CONFIG BANNER ──────────────────────── */
+.config-banner{background:rgba(181,151,60,.08);border:1px dashed var(--or);border-radius:6px;padding:18px 24px;margin:40px 28px 0;max-width:1500px;margin-left:auto;margin-right:auto;display:flex;align-items:flex-start;gap:14px}
+.config-banner svg{flex:none;margin-top:2px}
+.config-banner p{font-size:.88rem;color:var(--encre);line-height:1.6}
+.config-banner code{font-family:monospace;font-size:.82rem;background:rgba(181,151,60,.15);padding:1px 6px;border-radius:3px;color:var(--encre)}
+.config-banner.masque{display:none}
+
+/* ─── ZONE PRINCIPALE ────────────────────── */
+main{padding:60px 28px 80px;max-width:1500px;margin:0 auto}
+
+/* ─── ÉTAT VIDE / CHARGEMENT ─────────────── */
+.etat-message{text-align:center;padding:80px 0;color:var(--gris)}
+.etat-message .icone{font-size:3rem;margin-bottom:16px;display:block}
+.etat-message h3{font-family:'Anton',sans-serif;font-size:1.8rem;text-transform:uppercase;margin-bottom:10px;color:var(--encre)}
+.etat-message p{font-size:.95rem;max-width:42ch;margin:0 auto}
+.spinner{display:inline-block;width:32px;height:32px;border:3px solid var(--ligne);border-top-color:var(--or);border-radius:50%;animation:tourner .7s linear infinite;margin-bottom:20px}
+@keyframes tourner{to{transform:rotate(360deg)}}
+
+/* ─── GRILLE SÉRIES ──────────────────────── */
+.grille-series{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2px}
+.tuile-serie{border:1px solid var(--ligne);padding:34px 30px 28px;cursor:pointer;background:var(--fond);transition:border-color .25s,transform .25s,background .2s;position:relative;overflow:hidden}
+.tuile-serie::before{content:"";position:absolute;left:0;top:0;bottom:0;width:0;background:var(--or);transition:width .3s}
+.tuile-serie:hover{border-color:var(--or);transform:translateY(-3px);background:#FAFAF8}
+.tuile-serie:hover::before{width:3px}
+.tuile-serie:focus-visible{outline:2px solid var(--or);outline-offset:2px}
+.ts-num{font-family:'Anton',sans-serif;font-size:2.8rem;color:rgba(16,22,34,.1);line-height:1;transition:color .25s;margin-bottom:12px}
+.tuile-serie:hover .ts-num{color:var(--or)}
+.ts-nom{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(1.3rem,2.4vw,1.9rem);line-height:1.08;text-transform:uppercase;margin-bottom:10px}
+.ts-desc{font-size:.88rem;color:var(--gris);line-height:1.6;max-width:38ch}
+.ts-meta{margin-top:18px;display:flex;align-items:center;gap:12px}
+.ts-count{font-size:.72rem;text-transform:uppercase;letter-spacing:.18em;color:var(--or)}
+.ts-fleche{margin-left:auto;opacity:0;transform:translateX(-8px);transition:opacity .25s,transform .25s;color:var(--or)}
+.tuile-serie:hover .ts-fleche{opacity:1;transform:none}
+@media(max-width:640px){.grille-series{grid-template-columns:1fr;gap:0}}
+
+/* ─── VUE ÉPISODES ───────────────────────── */
+.vue-episodes{display:none}
+.vue-episodes.active{display:block}
+.retour-btn{display:inline-flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;font-family:'Archivo',sans-serif;font-size:.88rem;text-transform:uppercase;letter-spacing:.14em;color:var(--gris);padding:0;margin-bottom:40px;transition:color .25s}
+.retour-btn:hover{color:var(--or)}
+.retour-btn svg{transition:transform .25s}
+.retour-btn:hover svg{transform:translateX(-4px)}
+.serie-entete{margin-bottom:40px;padding-bottom:30px;border-bottom:1px solid var(--ligne)}
+.serie-entete .eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--or);font-weight:600;display:block;margin-bottom:10px}
+.serie-entete h2{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(2rem,5vw,4rem);line-height:1;text-transform:uppercase;margin-bottom:14px}
+.serie-entete .serie-desc{font-size:1rem;color:var(--gris);max-width:56ch;line-height:1.7}
+
+/* ─── LISTE ÉPISODES ─────────────────────── */
+.episode{display:grid;grid-template-columns:56px 1fr auto;gap:0 24px;align-items:center;padding:26px 0;border-bottom:1px solid var(--ligne);cursor:pointer;position:relative;transition:padding-left .3s}
+.episode::before{content:"";position:absolute;left:0;top:0;bottom:0;width:0;background:var(--or);transition:width .3s}
+.episode:hover{padding-left:16px}
+.episode:hover::before{width:3px}
+.ep-num{font-family:'Anton',sans-serif;font-size:1.8rem;color:rgba(16,22,34,.18);line-height:1;text-align:center;transition:color .3s}
+.episode:hover .ep-num{color:var(--or)}
+.ep-corps{min-width:0}
+.ep-titre{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(1.05rem,2.2vw,1.6rem);line-height:1.1;text-transform:uppercase;margin-bottom:4px}
+.ep-desc{font-size:.87rem;color:var(--gris);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:58ch}
+.ep-actions{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex:none}
+.ep-duree{font-size:.76rem;color:var(--gris);letter-spacing:.08em;white-space:nowrap}
+.btn-play{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;border:1px solid var(--ligne);background:var(--fond);transition:border-color .25s,background .25s;flex:none}
+.btn-play svg{width:14px;height:14px;fill:var(--encre);transition:fill .25s;margin-left:2px}
+.episode:hover .btn-play{border-color:var(--or);background:var(--or)}
+.episode:hover .btn-play svg{fill:#fff}
+.episode.actif .ep-num{color:var(--or)}
+.episode.actif .btn-play{border-color:var(--or);background:var(--or)}
+.episode.actif .btn-play svg{fill:#fff}
+@media(max-width:640px){
+  .episode{grid-template-columns:40px 1fr auto;gap:0 14px;padding:20px 0}
+  .ep-num{font-size:1.3rem}
+  .ep-desc{display:none}
+  .ep-duree{display:none}
+}
+
+/* ─── LECTEUR FIXE ───────────────────────── */
+.lecteur{position:fixed;bottom:0;left:0;right:0;z-index:200;background:var(--noir);color:var(--creme);padding:14px 28px;display:flex;align-items:center;gap:20px;transform:translateY(100%);transition:transform .45s cubic-bezier(.76,0,.24,1);box-shadow:0 -8px 40px rgba(0,0,0,.25)}
+.lecteur.actif{transform:none}
+.lecteur-info{flex:1;min-width:0}
+.lecteur-titre{font-family:'Anton',sans-serif;font-size:.95rem;text-transform:uppercase;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lecteur-serie{font-size:.68rem;text-transform:uppercase;letter-spacing:.16em;color:var(--creme-50);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lecteur-barre{flex:1;display:flex;align-items:center;gap:10px;min-width:100px}
+.lec-temps{font-size:.70rem;letter-spacing:.06em;color:var(--creme-50);flex:none;font-variant-numeric:tabular-nums;min-width:34px}
+.lec-progres{flex:1;height:3px;background:rgba(243,239,228,.2);border-radius:2px;cursor:pointer;position:relative}
+.lec-fill{height:100%;border-radius:2px;background:var(--or);width:0%;pointer-events:none;transition:width .25s linear}
+.lecteur-controles{display:flex;align-items:center;gap:12px;flex:none}
+.lc-btn{background:none;border:none;cursor:pointer;color:var(--creme);display:flex;align-items:center;justify-content:center;padding:6px;transition:color .2s;line-height:1}
+.lc-btn:hover{color:var(--or)}
+.lc-btn.grand{width:44px;height:44px;border-radius:50%;border:1px solid rgba(243,239,228,.2);transition:border-color .2s,color .2s}
+.lc-btn.grand:hover{border-color:var(--or)}
+.lc-skip-label{font-size:.56rem;font-family:'Archivo',sans-serif;display:block;text-align:center;line-height:1;margin-top:2px;letter-spacing:.04em}
+.lecteur-fermer{background:none;border:none;cursor:pointer;color:var(--creme-50);transition:color .2s;padding:6px;flex:none;line-height:1}
+.lecteur-fermer:hover{color:var(--creme)}
+@media(max-width:680px){
+  .lecteur{flex-wrap:wrap;gap:8px;padding:12px 16px}
+  .lecteur-barre{order:3;width:100%;flex:none;min-width:0}
+  .lecteur-info{order:1;flex:1;min-width:0}
+  .lecteur-controles{order:2;flex:none}
+  .lecteur-fermer{order:2}
+}
+
+/* ─── VERSET GÉANT ───────────────────────── */
+.verset-geant{padding:120px 28px;text-align:center;background:var(--noir);color:var(--creme)}
+.verset-geant p{font-family:'Anton',sans-serif;font-size:clamp(2.2rem,7vw,5.6rem);line-height:1.14;max-width:18ch;margin:0 auto}
+.verset-geant p i{font-style:normal;color:var(--or)}
+.verset-geant cite{display:block;margin-top:30px;font-style:normal;font-size:.8rem;letter-spacing:.24em;text-transform:uppercase;color:var(--creme-50)}
+
+/* ─── FOOTER minimal ─────────────────────── */
+footer{padding:60px 28px 40px;max-width:1500px;margin:0 auto;border-top:1px solid var(--ligne)}
+.j33-geant{font-family:'Anton',sans-serif;font-size:clamp(6rem,24vw,22rem);line-height:.8;letter-spacing:.02em;user-select:none;color:var(--encre)}
+.footer-bas{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:.75rem;color:var(--gris);margin-top:20px;border-top:1px solid var(--ligne);padding-top:20px}
+
+/* ─── REVEAL ─────────────────────────────── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <span class="marque">J33</span>
+</header>
+
+<!-- HERO -->
+<div class="hero reveal">
+  <div class="infos">
+    <span>Podcast J33</span>
+    <span class="h" id="heroSoustitre">Prêches &amp; Séries</span>
+  </div>
+  <h1 class="display">
+    <span class="ligne1" id="heroL1">Écouter</span>
+    <span class="ligne2" id="heroL2">et grandir</span>
+    <span class="ligne3" id="heroL3">ensemble</span>
+  </h1>
+  <p class="hero-desc" id="heroDesc">Retrouvez ici l'ensemble de nos prêches et séries d'enseignements.</p>
+</div>
+
+<!-- BANNIÈRE CONFIG -->
+<div class="config-banner" id="configBanner">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B5973C" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+  <p>
+    <strong>Configuration requise.</strong> Modifie la constante <code>GITHUB_USER</code> et <code>GITHUB_REPO</code> dans le code de cette page pour pointer vers ton dépôt GitHub.
+    Structure attendue&nbsp;: chaque sous-dossier = une série, les <code>.mp3</code> à l'intérieur = les épisodes.
+    Personnalise titres &amp; descriptions via le fichier <code>meta.json</code> à la racine du repo.
+  </p>
+</div>
+
+<!-- CONTENU PRINCIPAL -->
+<main>
+
+  <!-- VUE : GRILLE DES SÉRIES -->
+  <div id="vueAccueil">
+    <div id="zoneContenu">
+      <!-- rempli par JS -->
+    </div>
+  </div>
+
+  <!-- VUE : LISTE DES ÉPISODES D'UNE SÉRIE -->
+  <div class="vue-episodes" id="vueEpisodes">
+    <button class="retour-btn" onclick="retourAccueil()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Toutes les séries
+    </button>
+    <div class="serie-entete">
+      <span class="eyebrow" id="epEyebrow">Série</span>
+      <h2 id="epTitre">—</h2>
+      <p class="serie-desc" id="epDesc"></p>
+    </div>
+    <div id="listeEpisodes"></div>
+  </div>
+
+</main>
+
+<!-- VERSET -->
+<div class="verset-geant">
+  <p>Fais appel à moi et <i>je te répondrai</i></p>
+  <cite>Jérémie 33 : 3</cite>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="j33-geant" aria-hidden="true">J33</div>
+  <div class="footer-bas">
+    <span>© 2026 Église J33 — Is-sur-Tille &amp; Gemeaux</span>
+    <span>« Fais appel à moi et je te répondrai » — Jérémie 33:3</span>
+  </div>
+</footer>
+
+<!-- LECTEUR FIXE -->
+<div class="lecteur" id="lecteur" role="region" aria-label="Lecteur audio">
+  <div class="lecteur-info">
+    <div class="lecteur-titre" id="lecTitre">—</div>
+    <div class="lecteur-serie" id="lecSerie">Podcast J33</div>
+  </div>
+  <div class="lecteur-barre">
+    <span class="lec-temps" id="lecTemps">0:00</span>
+    <div class="lec-progres" id="lecProgres" role="slider" aria-label="Progression">
+      <div class="lec-fill" id="lecFill"></div>
+    </div>
+    <span class="lec-temps" id="lecDuree">—</span>
+  </div>
+  <div class="lecteur-controles">
+    <button class="lc-btn" onclick="sauter(-15)" aria-label="Reculer 15 secondes" title="−15s">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/>
+      </svg>
+    </button>
+    <button class="lc-btn grand" id="btnPlay" onclick="basculerLecture()" aria-label="Lecture / Pause">
+      <svg id="icoPlay" width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      <svg id="icoPause" width="17" height="17" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+    </button>
+    <button class="lc-btn" onclick="sauter(15)" aria-label="Avancer 15 secondes" title="+15s">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.49-3.51"/>
+      </svg>
+    </button>
+  </div>
+  <button class="lecteur-fermer" onclick="fermerLecteur()" aria-label="Fermer le lecteur">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   CONFIGURATION — à modifier
+   ═══════════════════════════════════════════ */
+const GITHUB_USER = 'TON_USERNAME';   // ex: 'eglise-j33'
+const GITHUB_REPO = 'TON_REPO';       // ex: 'podcasts'
+const GITHUB_BRANCH = 'main';
+
+/* URL de base pour accéder aux fichiers raw (lecture audio) */
+const RAW_BASE = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/${GITHUB_BRANCH}`;
+/* URL de base pour l'API GitHub (lecture de l'arborescence) */
+const API_BASE = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents`;
+
+/* ═══════════════════════════════════════════
+   ÉTAT
+   ═══════════════════════════════════════════ */
+let meta = {};          // contenu de meta.json
+let serieActive = null; // nom du dossier actif
+let episodesActifs = [];
+let audio = null;
+let epIndexActif = -1;
+
+/* ═══════════════════════════════════════════
+   INITIALISATION
+   ═══════════════════════════════════════════ */
+async function init() {
+  /* Masquer bannière config si le repo est renseigné */
+  if (GITHUB_USER !== 'TON_USERNAME' && GITHUB_REPO !== 'TON_REPO') {
+    document.getElementById('configBanner').classList.add('masque');
+  }
+
+  afficherChargement('Chargement des séries…');
+
+  try {
+    /* 1. Charger meta.json si présent */
+    try {
+      const rMeta = await fetch(`${API_BASE}/meta.json`);
+      if (rMeta.ok) {
+        const json = await rMeta.json();
+        const raw = atob(json.content.replace(/\n/g, ''));
+        meta = JSON.parse(raw);
+        appliquerMetaPage();
+      }
+    } catch(_) { /* meta.json absent ou invalide : pas grave */ }
+
+    /* 2. Lister la racine du repo */
+    const r = await fetch(API_BASE);
+    if (!r.ok) throw new Error(`Erreur GitHub : ${r.status}`);
+    const items = await r.json();
+
+    /* 3. Garder uniquement les dossiers (= séries) */
+    const series = items
+      .filter(i => i.type === 'dir')
+      .sort((a, b) => {
+        /* Respecter l'ordre défini dans meta.json si fourni */
+        const om = (meta.series || []).findIndex(s => s.dossier === a.name);
+        const on2 = (meta.series || []).findIndex(s => s.dossier === b.name);
+        if (om === -1 && on2 === -1) return a.name.localeCompare(b.name);
+        if (om === -1) return 1;
+        if (on2 === -1) return -1;
+        return om - on2;
+      });
+
+    if (series.length === 0) {
+      afficherVide('Aucune série trouvée', 'Crée des sous-dossiers dans ton dépôt GitHub, un par série.');
+      return;
+    }
+
+    /* 4. Compter les MP3 de chaque série */
+    const avecCompte = await Promise.all(series.map(async s => {
+      try {
+        const rc = await fetch(`${API_BASE}/${encodeURIComponent(s.name)}`);
+        const ep = rc.ok ? (await rc.json()).filter(f => f.name.toLowerCase().endsWith('.mp3')) : [];
+        return { ...s, nbEp: ep.length };
+      } catch(_) { return { ...s, nbEp: 0 }; }
+    }));
+
+    renderSeries(avecCompte);
+
+  } catch(e) {
+    afficherErreur(e.message);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   META PAGE (hero text)
+   ═══════════════════════════════════════════ */
+function appliquerMetaPage() {
+  const p = meta.page || {};
+  if (p.titre_l1) document.getElementById('heroL1').textContent = p.titre_l1;
+  if (p.titre_l2) document.getElementById('heroL2').textContent = p.titre_l2;
+  if (p.titre_l3) document.getElementById('heroL3').textContent = p.titre_l3;
+  if (p.sous_titre) document.getElementById('heroSoustitre').textContent = p.sous_titre;
+  if (p.description) document.getElementById('heroDesc').textContent = p.description;
+  if (p.titre_onglet) document.title = p.titre_onglet;
+}
+
+/* ═══════════════════════════════════════════
+   RENDU GRILLE DES SÉRIES
+   ═══════════════════════════════════════════ */
+function renderSeries(series) {
+  const zone = document.getElementById('zoneContenu');
+  zone.innerHTML = `<div class="grille-series">${
+    series.map((s, i) => {
+      const m = (meta.series || []).find(x => x.dossier === s.name) || {};
+      const nom = m.titre || s.name.replace(/[-_]/g, ' ');
+      const desc = m.description || '';
+      const label = s.nbEp > 0 ? `${s.nbEp} épisode${s.nbEp > 1 ? 's' : ''}` : 'Chargement…';
+      return `
+        <div class="tuile-serie reveal" tabindex="0" role="button"
+             data-dossier="${s.name}"
+             aria-label="Ouvrir la série ${nom}"
+             onclick="ouvrirSerie(this)"
+             onkeydown="if(event.key==='Enter')ouvrirSerie(this)">
+          <div class="ts-num">${String(i+1).padStart(2,'0')}</div>
+          <div class="ts-nom">${nom}</div>
+          ${desc ? `<div class="ts-desc">${desc}</div>` : ''}
+          <div class="ts-meta">
+            <span class="ts-count">${label}</span>
+            <svg class="ts-fleche" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
+        </div>`;
+    }).join('')
+  }</div>`;
+  checkReveal();
+}
+
+/* ═══════════════════════════════════════════
+   OUVRIR UNE SÉRIE
+   ═══════════════════════════════════════════ */
+async function ouvrirSerie(el) {
+  const dossier = el.dataset.dossier;
+  serieActive = dossier;
+  const m = (meta.series || []).find(x => x.dossier === dossier) || {};
+  const nom = m.titre || dossier.replace(/[-_]/g, ' ');
+
+  /* Basculer vues */
+  document.getElementById('vueAccueil').style.display = 'none';
+  const vueEp = document.getElementById('vueEpisodes');
+  vueEp.classList.add('active');
+
+  document.getElementById('epEyebrow').textContent = 'Série';
+  document.getElementById('epTitre').textContent = nom;
+  document.getElementById('epDesc').textContent = m.description || '';
+  document.getElementById('listeEpisodes').innerHTML = `<div class="etat-message"><div class="spinner"></div><p>Chargement des épisodes…</p></div>`;
+
+  window.scrollTo({top: 0, behavior: 'smooth'});
+
+  try {
+    const r = await fetch(`${API_BASE}/${encodeURIComponent(dossier)}`);
+    if (!r.ok) throw new Error(`Erreur ${r.status}`);
+    const items = await r.json();
+
+    let eps = items
+      .filter(f => f.name.toLowerCase().endsWith('.mp3'))
+      .sort((a, b) => a.name.localeCompare(b.name, undefined, {numeric: true}));
+
+    if (eps.length === 0) {
+      document.getElementById('listeEpisodes').innerHTML = `
+        <div class="etat-message">
+          <span class="icone">🎙</span>
+          <h3>Aucun épisode</h3>
+          <p>Ce dossier ne contient pas encore de fichier .mp3.</p>
+        </div>`;
+      return;
+    }
+
+    /* Enrichir avec meta.json si disponible */
+    const metaSerie = m.episodes || {};
+    episodesActifs = eps.map((f, i) => {
+      const cle = f.name;
+      const em = metaSerie[cle] || {};
+      return {
+        index: i,
+        fichier: f.name,
+        url: em.url || `${RAW_BASE}/${dossier}/${encodeURIComponent(f.name)}`,
+        titre: em.titre || f.name.replace(/\.mp3$/i,'').replace(/^[\d\s.\-_]+/,'').replace(/[-_]/g,' ') || `Épisode ${i+1}`,
+        desc: em.description || '',
+        serie: nom,
+        dossier
+      };
+    });
+
+    renderEpisodes();
+
+  } catch(e) {
+    document.getElementById('listeEpisodes').innerHTML = `
+      <div class="etat-message">
+        <span class="icone">⚠️</span>
+        <h3>Erreur de chargement</h3>
+        <p>${e.message}</p>
+      </div>`;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   RENDU LISTE ÉPISODES
+   ═══════════════════════════════════════════ */
+function renderEpisodes() {
+  const zone = document.getElementById('listeEpisodes');
+  zone.innerHTML = episodesActifs.map((ep, i) => `
+    <div class="episode${epIndexActif === i ? ' actif' : ''}"
+         id="ep-${i}" onclick="lancer(${i})"
+         role="button" tabindex="0" aria-label="Écouter ${ep.titre}"
+         onkeydown="if(event.key==='Enter')lancer(${i})">
+      <div class="ep-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="ep-corps">
+        <div class="ep-titre">${ep.titre}</div>
+        ${ep.desc ? `<div class="ep-desc">${ep.desc}</div>` : ''}
+      </div>
+      <div class="ep-actions">
+        <div class="btn-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ═══════════════════════════════════════════
+   RETOUR ACCUEIL
+   ═══════════════════════════════════════════ */
+function retourAccueil() {
+  document.getElementById('vueEpisodes').classList.remove('active');
+  document.getElementById('vueAccueil').style.display = '';
+  serieActive = null;
+  episodesActifs = [];
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+/* ═══════════════════════════════════════════
+   LECTEUR
+   ═══════════════════════════════════════════ */
+function lancer(index) {
+  const ep = episodesActifs[index];
+  if (!ep) return;
+
+  /* Marquer actif visuellement */
+  epIndexActif = index;
+  document.querySelectorAll('.episode').forEach((el, i) => {
+    el.classList.toggle('actif', i === index);
+  });
+
+  document.getElementById('lecTitre').textContent = `${String(index+1).padStart(2,'0')} — ${ep.titre}`;
+  document.getElementById('lecSerie').textContent = ep.serie;
+  document.getElementById('lecteur').classList.add('actif');
+  document.getElementById('lecDuree').textContent = '—';
+  document.getElementById('lecFill').style.width = '0%';
+  document.getElementById('lecTemps').textContent = '0:00';
+
+  if (audio) { audio.pause(); audio = null; }
+
+  audio = new Audio(ep.url);
+  audio.addEventListener('loadedmetadata', () => {
+    document.getElementById('lecDuree').textContent = formatTemps(audio.duration);
+  });
+  audio.addEventListener('timeupdate', () => {
+    if (!audio.duration) return;
+    document.getElementById('lecFill').style.width = (audio.currentTime / audio.duration * 100) + '%';
+    document.getElementById('lecTemps').textContent = formatTemps(audio.currentTime);
+  });
+  audio.addEventListener('ended', () => {
+    setEtat('pause');
+    /* Passer à l'épisode suivant automatiquement */
+    if (index + 1 < episodesActifs.length) lancer(index + 1);
+  });
+  audio.play().then(() => setEtat('lecture')).catch(() => setEtat('pause'));
+}
+
+function basculerLecture() {
+  if (!audio) return;
+  if (audio.paused) { audio.play(); setEtat('lecture'); }
+  else { audio.pause(); setEtat('pause'); }
+}
+
+function setEtat(etat) {
+  document.getElementById('icoPlay').style.display  = etat === 'lecture' ? 'none' : 'block';
+  document.getElementById('icoPause').style.display = etat === 'lecture' ? 'block' : 'none';
+}
+
+function sauter(sec) {
+  if (!audio) return;
+  audio.currentTime = Math.max(0, Math.min(audio.duration || 0, audio.currentTime + sec));
+}
+
+function fermerLecteur() {
+  if (audio) { audio.pause(); audio = null; }
+  epIndexActif = -1;
+  document.querySelectorAll('.episode').forEach(el => el.classList.remove('actif'));
+  document.getElementById('lecteur').classList.remove('actif');
+  setEtat('pause');
+  document.getElementById('lecFill').style.width = '0%';
+  document.getElementById('lecTemps').textContent = '0:00';
+  document.getElementById('lecDuree').textContent = '—';
+}
+
+document.getElementById('lecProgres').addEventListener('click', function(e) {
+  if (!audio || !audio.duration) return;
+  audio.currentTime = (e.offsetX / this.offsetWidth) * audio.duration;
+});
+
+/* ═══════════════════════════════════════════
+   UTILITAIRES
+   ═══════════════════════════════════════════ */
+function formatTemps(sec) {
+  if (!isFinite(sec)) return '—';
+  const m = Math.floor(sec / 60), s = Math.floor(sec % 60);
+  return m + ':' + (s < 10 ? '0' : '') + s;
+}
+
+function afficherChargement(msg) {
+  document.getElementById('zoneContenu').innerHTML = `
+    <div class="etat-message">
+      <div class="spinner"></div>
+      <p>${msg}</p>
+    </div>`;
+}
+
+function afficherVide(titre, msg) {
+  document.getElementById('zoneContenu').innerHTML = `
+    <div class="etat-message">
+      <span class="icone">📂</span>
+      <h3>${titre}</h3>
+      <p>${msg}</p>
+    </div>`;
+}
+
+function afficherErreur(msg) {
+  document.getElementById('zoneContenu').innerHTML = `
+    <div class="etat-message">
+      <span class="icone">⚠️</span>
+      <h3>Impossible de charger</h3>
+      <p>Vérifie que <code>GITHUB_USER</code> et <code>GITHUB_REPO</code> sont corrects et que le dépôt est public.<br><br>Détail : ${msg}</p>
+    </div>`;
+}
+
+function checkReveal() {
+  document.querySelectorAll('.reveal').forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight * .92)
+      el.classList.add('visible');
+  });
+}
+window.addEventListener('scroll', checkReveal, {passive: true});
+checkReveal();
+
+/* ─── TITRE HÉRO : décalages aléatoires modérés ─── */
+function initTitreHero() {
+  /* Plages de padding en % de la largeur du conteneur
+     ligne1 : légèrement à gauche  → padding-left entre 0 et 8%
+     ligne2 : autour du centre     → padding-left entre 12 et 25%
+     ligne3 : vers la droite       → padding-left entre 28 et 42%, couleur or */
+  const ranges = [
+    [0,   8],    // ligne1
+    [12,  25],   // ligne2
+    [28,  42],   // ligne3
+  ];
+  const ids = ['heroL1','heroL2','heroL3'];
+  ids.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const [min, max] = ranges[i];
+    const val = (Math.random() * (max - min) + min).toFixed(1);
+    el.style.paddingLeft = val + '%';
+    if (i === 2) el.style.color = 'var(--or)';
+  });
+}
+initTitreHero();
+
+/* LANCEMENT */
+init();
+</script>
+</body>
+</html>
