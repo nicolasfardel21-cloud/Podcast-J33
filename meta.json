@@ -7,9 +7,9 @@
       "episodes": {
         "Miettes d'histoire - 01 - Intro.mp3": {
           "titre": "Introduction",
-          "description": "Merveilleuse histoire des chrétiens d'Is-sur-Tille"
+          "description": "Merveilleuse histoire des chrétiens d'Is-sur-Tille",
           "url": "https://github.com/nicolasfardel21-cloud/Podcast-J33/releases/download/v1.0/Miettes.d.histoire.-.E1.-.Intro.mp3"
-        },
+        }
       }
     }
   ]
