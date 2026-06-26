@@ -1,4 +1,18 @@
 {
+  "sections": [
+    {
+      "titre": "Podcasts",
+      "dossiers": ["Miettes d'histoire"]
+    },
+    {
+      "titre": "Prêches",
+      "dossiers": []
+    },
+    {
+      "titre": "Séries",
+      "dossiers": []
+    }
+  ],
   "series": [
     {
       "dossier": "Miettes d'histoire",
@@ -16,12 +30,12 @@
   "actualites": [
     {
       "image": "actualites/image1.png",
-      "titre": "Nouveau site",
+      "titre": "",
       "lien": ""
     },
     {
       "image": "actualites/image2.png",
-      "titre": "Miettes d'histoire",
+      "titre": "",
       "lien": "Miettes d'histoire"
     }
   ]
