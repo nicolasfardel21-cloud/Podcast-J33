@@ -23,6 +23,11 @@
           "titre": "Introduction",
           "description": "Merveilleuse histoire des chrétiens d'Is-sur-Tille",
           "url": "https://github.com/nicolasfardel21-cloud/Podcast-J33/releases/download/v1.0/Miettes.d.histoire.-.E1.-.Intro.mp3"
+        },
+        "Miettes d'histoire - 02 - Les origines.mp3": {
+          "titre": "Les origines",
+          "description": "Aux racines de la communauté chrétienne locale",
+          "url": "https://github.com/nicolasfardel21-cloud/Podcast-J33/releases/download/v1.0/Miettes.d.histoire.-.E2.-.Les.origines.mp3"
         }
       }
     }
@@ -31,7 +36,7 @@
     {
       "image": "actualites/image1.png",
       "titre": "",
-      "lien": ""
+      "lien": "Miettes d'histoire"
     },
     {
       "image": "actualites/image2.png",
