@@ -25,9 +25,10 @@
           "url": "https://github.com/nicolasfardel21-cloud/Podcast-J33/releases/download/v1.0/Miettes.d.histoire.-.E1.-.Intro.mp3"
         },
         "Miettes d'histoire - 02 - Les origines.mp3": {
-          "titre": "Les origines - La réforme",
+          "titre": "Les origines",
           "description": "Les origines et héritages de la Réforme dans notre région.",
-          "url": "https://github.com/nicolasfardel21-cloud/Podcast-J33/releases/download/v1.0/Miettes.d.histoire.-.E2.-.Luther.mp3"
+          "url": "https://github.com/nicolasfardel21-cloud/Podcast-J33/releases/download/v1.0/Miettes.d.histoire.-.E2.-.Luther.mp3",
+          "disponible": "2026-06-27"
         }
       }
     }
