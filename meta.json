@@ -12,5 +12,12 @@
         }
       }
     }
+  ],
+  "actualites": [
+    {
+      "image": "actualites/image1.png",
+      "titre": "Miettes d'histoire",
+      "lien": "Miettes d'histoire"
+    }
   ]
 }
